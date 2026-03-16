@@ -16,6 +16,8 @@ import type { HeroClass } from "@/types";
 
 interface CreateAdventureDialogProps {
   profileId: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const heroClasses: Array<{
@@ -56,16 +58,22 @@ const heroClasses: Array<{
   },
 ];
 
-export function CreateAdventureDialog({ profileId }: CreateAdventureDialogProps) {
+export function CreateAdventureDialog({ profileId, open: openProp, onOpenChange: onOpenChangeProp }: CreateAdventureDialogProps) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const isControlled = openProp !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = isControlled ? openProp : internalOpen;
   const [selected, setSelected] = useState<HeroClass | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleOpenChange(next: boolean) {
     if (!isPending) {
-      setOpen(next);
+      if (isControlled) {
+        onOpenChangeProp?.(next);
+      } else {
+        setInternalOpen(next);
+      }
       if (!next) {
         setSelected(null);
         setError(null);
@@ -83,7 +91,7 @@ export function CreateAdventureDialog({ profileId }: CreateAdventureDialogProps)
     startTransition(async () => {
       try {
         const adventureId = await createAdventure(profileId, selected);
-        setOpen(false);
+        handleOpenChange(false);
         router.push(`/adventures/${adventureId}`);
       } catch {
         setError("Une erreur est survenue. Veuillez réessayer.");
@@ -93,9 +101,11 @@ export function CreateAdventureDialog({ profileId }: CreateAdventureDialogProps)
 
   return (
     <>
-      <Button variant="frame" onClick={() => setOpen(true)}>
-        Nouvelle aventure
-      </Button>
+      {!isControlled && (
+        <Button variant="frame" onClick={() => handleOpenChange(true)}>
+          Nouvelle aventure
+        </Button>
+      )}
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
 
