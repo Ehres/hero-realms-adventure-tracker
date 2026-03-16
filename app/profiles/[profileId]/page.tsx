@@ -7,6 +7,7 @@ import { getAdventuresByProfile } from "@/app/actions/adventures";
 import { getProfileStats } from "@/app/actions/stats";
 import { AdventureCard } from "@/components/adventures/adventure-card";
 import { CreateAdventureDialog } from "@/components/adventures/create-adventure-dialog";
+import { ProfileStats } from "@/components/profiles/profile-stats";
 import type { Adventure } from "@/types";
 
 interface ProfilePageProps {
@@ -54,37 +55,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </h1>
         </header>
 
-        {/* Statistics */}
-        <section className="mb-10 grid grid-cols-3 gap-4 rounded-xl border border-border bg-card p-4">
-          <div className="text-center">
-            <p className="text-2xl font-bold">{totalGames}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">Parties</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-green-400">{wins}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">Victoires</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-red-400">{losses}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">Défaites</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold">{favoriteClass ?? "—"}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              Classe favorite
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold">{maxLevel}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">Niveau max</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold">{totalXpGained}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              XP total gagné
-            </p>
-          </div>
-        </section>
+        <ProfileStats
+          totalGames={totalGames}
+          wins={wins}
+          losses={losses}
+          favoriteClass={favoriteClass}
+          maxLevel={maxLevel}
+          totalXpGained={totalXpGained}
+        />
 
         {/* Adventures header */}
         <div className="mb-6 flex items-center justify-between">

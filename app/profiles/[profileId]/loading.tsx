@@ -1,4 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/warcraftcn/skeleton";
+import { Card, CardContent } from "@/components/ui/warcraftcn/card";
 
 export default function ProfilePageLoading() {
   return (
@@ -11,14 +12,16 @@ export default function ProfilePageLoading() {
         </header>
 
         {/* Stats grid skeleton */}
-        <section className="mb-10 grid grid-cols-3 gap-4 rounded-xl border border-border bg-card p-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-1.5">
-              <Skeleton className="h-8 w-12" />
-              <Skeleton className="h-3 w-16" />
-            </div>
-          ))}
-        </section>
+        <Card className="mb-10">
+          <CardContent className="grid grid-cols-3 gap-4 py-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-1.5">
+                <Skeleton faction="default" className="h-8 w-12" />
+                <Skeleton faction="default" className="h-3 w-16" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
 
         {/* Adventures header skeleton */}
         <div className="mb-6 flex items-center justify-between">
