@@ -15,6 +15,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import type { HeroClass } from "@/types";
+import { ConfettiOnMount } from "@/components/shared/confetti";
 
 interface LevelUpPageProps {
   params: Promise<{ gameId: string }>;
@@ -68,6 +69,7 @@ function LevelUpContent({ gameId }: { gameId: string }) {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <ConfettiOnMount colors={["#FFD700", "#FFA500", "#FF6B35", "#FFFFFF"]} />
       <div className="mb-8 text-center">
         <p className="text-4xl mb-2">🎉</p>
         <h1 className="text-2xl font-bold tracking-tight">

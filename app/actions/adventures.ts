@@ -129,3 +129,12 @@ export async function getAdventuresByProfile(
     .orderBy(adventures.startedAt);
   return rows as Adventure[];
 }
+
+export async function hasPendingLevelUps(): Promise<boolean> {
+  const rows = await db
+    .select({ id: adventures.id })
+    .from(adventures)
+    .where(eq(adventures.pendingLevelUp, true))
+    .limit(1);
+  return rows.length > 0;
+}

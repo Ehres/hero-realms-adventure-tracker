@@ -1,11 +1,15 @@
 export const dynamic = 'force-dynamic';
 
-import Link from "next/link";
 import { getProfiles } from "@/app/actions/profiles";
+import { hasPendingLevelUps } from "@/app/actions/adventures";
 import { ProfileList } from "@/components/profiles/profile-list";
+import { NewGameButton } from "@/components/shared/new-game-button";
 
 export default async function Home() {
-  const profiles = await getProfiles();
+  const [profiles, pendingLevelUp] = await Promise.all([
+    getProfiles(),
+    hasPendingLevelUps(),
+  ]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -19,12 +23,7 @@ export default async function Home() {
               Suivi de campagne
             </p>
           </div>
-          <Link
-            href="/game/new"
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-2.5 text-sm font-medium text-primary-foreground whitespace-nowrap transition-all hover:opacity-90"
-          >
-            Nouvelle Partie
-          </Link>
+          <NewGameButton disabled={pendingLevelUp} />
         </header>
 
         <ProfileList profiles={profiles} />

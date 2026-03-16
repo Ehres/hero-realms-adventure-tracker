@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { use, useState, useTransition } from "react";
+import { use, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { endGame } from "@/app/actions/games";
 import { assignLoot } from "@/app/actions/loot";
@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { HeroClass } from "@/types";
+import { useConfetti } from "@/components/shared/confetti";
 
 interface EndGamePageProps {
   params: Promise<{ gameId: string }>;
@@ -39,6 +40,7 @@ function EndGameContent({ gameId }: { gameId: string }) {
   const [selectedWinner, setSelectedWinner] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lootState, setLootState] = useState<LootState | null>(null);
+  const { fireLoot } = useConfetti();
 
   const gameDataPromise = useState<ReturnType<typeof getGameWithParticipants>>(
     () => getGameWithParticipants(gameId)
@@ -125,6 +127,13 @@ function EndGameContent({ gameId }: { gameId: string }) {
   const currentLootParticipant = currentLoot
     ? participants.find((p) => p.adventureId === currentLoot.adventureId)
     : null;
+
+  useEffect(() => {
+    if (currentLoot) {
+      fireLoot();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!!currentLoot]);
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">

@@ -137,7 +137,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                             delta
                           )
                         }
-                        className="w-full font-mono text-sm"
+                        className="w-full min-h-[44px] font-mono text-sm"
                       >
                         {delta > 0 ? `+${delta}` : delta}
                       </Button>

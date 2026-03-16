@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { createProfile } from "@/app/actions/profiles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface CreateProfileDialogProps {
@@ -65,6 +67,9 @@ export function CreateProfileDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Nouveau profil</DialogTitle>
+          <DialogDescription id="create-profile-desc">
+            Entrez le nom du joueur pour créer un nouveau profil de campagne.
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -78,6 +83,7 @@ export function CreateProfileDialog({
               disabled={loading}
               autoFocus
               aria-invalid={error !== null}
+              aria-describedby="create-profile-desc"
             />
             {error && (
               <p className="text-xs text-destructive">{error}</p>
@@ -94,7 +100,14 @@ export function CreateProfileDialog({
               Annuler
             </Button>
             <Button type="submit" disabled={loading || name.trim().length === 0}>
-              {loading ? "Création…" : "Créer"}
+              {loading ? (
+                <>
+                  <Loader2 className="mr-1.5 h-4 w-4 animate-spin" aria-hidden="true" />
+                  Création…
+                </>
+              ) : (
+                "Créer"
+              )}
             </Button>
           </DialogFooter>
         </form>
