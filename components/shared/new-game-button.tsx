@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { WcButton } from "@/components/ui/wc-button";
 
 interface NewGameButtonProps {
   disabled: boolean;
@@ -10,14 +11,10 @@ interface NewGameButtonProps {
 export function NewGameButton({ disabled }: NewGameButtonProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const baseClassName =
-    "inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-2.5 text-sm font-medium text-primary-foreground whitespace-nowrap transition-all";
-
   if (disabled) {
     return (
       <div className="relative">
-        <button
-          type="button"
+        <WcButton
           disabled
           aria-disabled="true"
           aria-label="Nouvelle Partie — Un héros attend son amélioration de niveau"
@@ -25,10 +22,9 @@ export function NewGameButton({ disabled }: NewGameButtonProps) {
           onMouseLeave={() => setShowTooltip(false)}
           onFocus={() => setShowTooltip(true)}
           onBlur={() => setShowTooltip(false)}
-          className={`${baseClassName} cursor-not-allowed opacity-50`}
         >
           Nouvelle Partie
-        </button>
+        </WcButton>
         {showTooltip && (
           <div
             role="tooltip"
@@ -42,8 +38,8 @@ export function NewGameButton({ disabled }: NewGameButtonProps) {
   }
 
   return (
-    <Link href="/game/new" className={`${baseClassName} hover:opacity-90`}>
-      Nouvelle Partie
-    </Link>
+    <WcButton asChild>
+      <Link href="/game/new">Nouvelle Partie</Link>
+    </WcButton>
   );
 }

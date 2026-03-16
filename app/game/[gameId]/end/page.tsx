@@ -9,6 +9,7 @@ import { assignLoot } from "@/app/actions/loot";
 import { getGameWithParticipants } from "@/app/actions/game-queries";
 import { HeroClassBadge } from "@/components/adventures/hero-class-badge";
 import { Button } from "@/components/ui/button";
+import { WcButton } from "@/components/ui/wc-button";
 import {
   Card,
   CardContent,
@@ -197,13 +198,13 @@ function EndGameContent({ gameId }: { gameId: string }) {
         >
           Retour
         </Button>
-        <Button
+        <WcButton
           onClick={handleConfirm}
           disabled={!selectedWinner || isPending}
           className="flex-1"
         >
           {isPending ? "Traitement..." : "Confirmer"}
-        </Button>
+        </WcButton>
       </div>
 
       {/* Loot assignment modal */}

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createProfile } from "@/app/actions/profiles";
 import { Button } from "@/components/ui/button";
+import { WcButton } from "@/components/ui/wc-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -99,7 +100,7 @@ export function CreateProfileDialog({
             >
               Annuler
             </Button>
-            <Button type="submit" disabled={loading || name.trim().length === 0}>
+            <WcButton type="submit" disabled={loading || name.trim().length === 0}>
               {loading ? (
                 <>
                   <Loader2 className="mr-1.5 h-4 w-4 animate-spin" aria-hidden="true" />
@@ -108,7 +109,7 @@ export function CreateProfileDialog({
               ) : (
                 "Créer"
               )}
-            </Button>
+            </WcButton>
           </DialogFooter>
         </form>
       </DialogContent>
