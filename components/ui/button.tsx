@@ -14,13 +14,13 @@ const buttonVariants = cva(
         default:
           "bg-center px-5 py-4 bg-cover bg-no-repeat text-white hover:brightness-110",
         frame:
-          "bg-center bg-cover bg-no-repeat text-white hover:brightness-110",
+          "bg-center bg-cover bg-no-repeat text-white hover:brightness-110 px-4",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 function Button({
@@ -43,7 +43,7 @@ function Button({
         buttonVariants({ variant }),
         "border-solid [border-image-repeat:stretch] border-5 [border-image-slice:16_fill]",
         borderImageClass,
-        className
+        className,
       )}
       style={style}
       data-slot="button"
