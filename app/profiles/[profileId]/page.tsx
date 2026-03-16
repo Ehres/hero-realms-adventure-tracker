@@ -7,6 +7,7 @@ import { getAdventuresByProfile } from "@/app/actions/adventures";
 import { getProfileStats } from "@/app/actions/stats";
 import { AdventureCard } from "@/components/adventures/adventure-card";
 import { CreateAdventureDialog } from "@/components/adventures/create-adventure-dialog";
+import { EmptyAdventure } from "@/components/adventures/empty-adventure";
 import { ProfileStats } from "@/components/profiles/profile-stats";
 import type { Adventure } from "@/types";
 
@@ -71,12 +72,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
 
         {adventures.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center">
-            <p className="text-muted-foreground">Aucune aventure en cours.</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Lancez une nouvelle aventure pour commencer !
-            </p>
-          </div>
+          <EmptyAdventure profileId={profileId} />
         ) : (
           <div className="flex flex-col gap-8">
             {active.length > 0 && (
