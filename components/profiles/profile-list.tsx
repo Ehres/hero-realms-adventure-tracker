@@ -7,7 +7,7 @@ import { CreateProfileDialog } from "@/components/profiles/create-profile-dialog
 import type { Profile } from "@/types";
 
 interface ProfileListProps {
-  profiles: Profile[];
+  profiles: (Profile & { adventureCount: number })[];
 }
 
 export function ProfileList({ profiles }: ProfileListProps) {
@@ -39,7 +39,7 @@ export function ProfileList({ profiles }: ProfileListProps) {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {profiles.map((profile) => (
-            <ProfileCard key={profile.id} profile={profile} adventureCount={0} />
+            <ProfileCard key={profile.id} profile={profile} adventureCount={profile.adventureCount} />
           ))}
         </div>
       )}

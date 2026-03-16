@@ -1,13 +1,13 @@
 export const dynamic = 'force-dynamic';
 
-import { getProfiles } from "@/app/actions/profiles";
+import { getProfilesWithAdventureCounts } from "@/app/actions/profiles";
 import { hasPendingLevelUps } from "@/app/actions/adventures";
 import { ProfileList } from "@/components/profiles/profile-list";
 import { NewGameButton } from "@/components/shared/new-game-button";
 
 export default async function Home() {
   const [profiles, pendingLevelUp] = await Promise.all([
-    getProfiles(),
+    getProfilesWithAdventureCounts(),
     hasPendingLevelUps(),
   ]);
 
