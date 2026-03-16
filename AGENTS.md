@@ -689,6 +689,7 @@ pnpm lint
 | **[PRD.md](./PRD.md)** | Product requirements (French) | Product & design |
 | **[TECHNICAL_CHOICES.md](./TECHNICAL_CHOICES.md)** | Architecture decisions & trade-offs | Engineers & architects |
 | **[TASKS_PLAN.md](./TASKS_PLAN.md)** | 11-phase implementation roadmap | Project managers & developers |
+| **[Instructions Index](./docs/instructions/README.md)** | Coding conventions & standards (naming, TypeScript, React, testing, clean code) | All developers & AI agents |
 
 ### External Resources
 **Next.js 16 Documentation**
