@@ -1,5 +1,6 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
+import Image from "next/image";
 import { getProfilesWithAdventureCounts } from "@/app/actions/profiles";
 import { hasPendingLevelUps } from "@/app/actions/adventures";
 import { ProfileList } from "@/components/profiles/profile-list";
@@ -16,12 +17,13 @@ export default async function Home() {
       <div className="mx-auto max-w-4xl px-4 py-10">
         <header className="mb-10 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              Hero Realms Campaign
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Suivi de campagne
-            </p>
+            <Image
+              src="/hero-realms-logo.png"
+              alt="Hero Realms Campaign"
+              width={200}
+              height={80}
+              priority
+            />
           </div>
           <NewGameButton disabled={pendingLevelUp} />
         </header>
