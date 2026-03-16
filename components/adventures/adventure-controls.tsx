@@ -37,7 +37,7 @@ export function AdventureControls({
   return (
     <div className="flex flex-col gap-2">
       <Button
-        variant="outline"
+        variant="frame"
         onClick={handleTogglePause}
         disabled={isPending}
         className="w-full"

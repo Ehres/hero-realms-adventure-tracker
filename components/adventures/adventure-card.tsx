@@ -100,8 +100,7 @@ export function AdventureCard({ adventure }: AdventureCardProps) {
       <CardFooter className="flex items-center justify-between gap-2">
         {status !== "completed" && (
           <Button
-            variant="outline"
-            size="sm"
+            variant="frame"
             onClick={handleTogglePause}
             disabled={isPending}
           >

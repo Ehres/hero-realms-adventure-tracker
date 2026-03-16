@@ -1,3 +1,5 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 export default function HomeLoading() {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -5,10 +7,10 @@ export default function HomeLoading() {
         {/* Header skeleton */}
         <header className="mb-10 flex items-center justify-between">
           <div>
-            <div className="h-7 w-52 animate-pulse rounded bg-muted" />
-            <div className="mt-1.5 h-4 w-32 animate-pulse rounded bg-muted" />
+            <Skeleton className="h-7 w-52" />
+            <Skeleton className="mt-1.5 h-4 w-32" />
           </div>
-          <div className="h-9 w-36 animate-pulse rounded-lg bg-muted" />
+          <Skeleton className="h-9 w-36" />
         </header>
 
         {/* Profile card grid skeleton — 3 cards */}
@@ -18,12 +20,12 @@ export default function HomeLoading() {
               key={i}
               className="rounded-xl border border-border bg-card p-4"
             >
-              <div className="mb-3 h-5 w-32 animate-pulse rounded bg-muted" />
-              <div className="mb-2 h-3 w-full animate-pulse rounded bg-muted" />
-              <div className="h-3 w-2/3 animate-pulse rounded bg-muted" />
+              <Skeleton className="mb-3 h-5 w-32" />
+              <Skeleton className="mb-2 h-3 w-full" />
+              <Skeleton className="h-3 w-2/3" />
               <div className="mt-4 flex gap-2">
-                <div className="h-8 flex-1 animate-pulse rounded bg-muted" />
-                <div className="h-8 w-8 animate-pulse rounded bg-muted" />
+                <Skeleton className="h-8 flex-1" />
+                <Skeleton className="h-8 w-8" />
               </div>
             </div>
           ))}

@@ -174,7 +174,6 @@ export function LevelUpChoiceCard({
         onClick={handleConfirm}
         disabled={!selected || isPending}
         className="w-full"
-        size="lg"
       >
         {isPending ? "Application..." : "Confirmer le choix"}
       </Button>

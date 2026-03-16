@@ -128,8 +128,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                     {HP_DELTAS.map((delta) => (
                       <Button
                         key={delta}
-                        variant={delta < 0 ? "destructive" : "outline"}
-                        size="sm"
+                        variant={delta < 0 ? "default" : "frame"}
                         onClick={() =>
                           handleHpChange(
                             participant.adventureId,
@@ -137,7 +136,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                             delta
                           )
                         }
-                        className="w-full min-h-[44px] font-mono text-sm"
+                        className={`w-full min-h-[44px] font-mono text-sm${delta < 0 ? " brightness-75 hue-rotate-[-20deg]" : ""}`}
                       >
                         {delta > 0 ? `+${delta}` : delta}
                       </Button>

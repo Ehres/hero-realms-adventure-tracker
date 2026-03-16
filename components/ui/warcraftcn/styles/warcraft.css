@@ -516,3 +516,92 @@
   background-position: center;
   background-size: contain;
 }
+
+/* ============================================
+   CHECKBOX
+   ============================================ */
+
+.wc-checkbox {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+
+.wc-checkbox:focus-visible {
+  outline: none;
+  border-color: hsl(45 100% 60%);
+  box-shadow: 0 0 0 3px hsl(45 100% 60% / 0.4);
+}
+
+.wc-checkbox[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wc-checkbox-default { background-image: url("../assets/checkbox-default.webp"); }
+.wc-checkbox-default[data-state="checked"] { background-image: url("../assets/checkbox-default-checked.webp"); }
+.wc-checkbox-human { background-image: url("../assets/checkbox-human.webp"); }
+.wc-checkbox-human[data-state="checked"] { background-image: url("../assets/checkbox-human-checked.webp"); }
+.wc-checkbox-orc { background-image: url("../assets/checkbox-orc.webp"); }
+.wc-checkbox-orc[data-state="checked"] { background-image: url("../assets/checkbox-orc-checked.webp"); }
+.wc-checkbox-elf { background-image: url("../assets/checkbox-elf.webp"); }
+.wc-checkbox-elf[data-state="checked"] { background-image: url("../assets/checkbox-elf-checked.webp"); }
+.wc-checkbox-undead { background-image: url("../assets/checkbox-undead.webp"); }
+.wc-checkbox-undead[data-state="checked"] { background-image: url("../assets/checkbox-undead-checked.webp"); }
+
+/* ============================================
+   RADIO GROUP — Gem Socket Rune Style
+   ============================================ */
+
+.wc-radio-socket {
+  all: unset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 40% 35%, hsl(35 8% 18%) 0%, hsl(35 6% 10%) 70%, hsl(35 4% 6%) 100%);
+  box-shadow: inset 0 1px 3px hsl(0 0% 0% / 0.6), inset 0 -1px 1px hsl(35 20% 30% / 0.2), 0 0 0 1.5px hsl(35 15% 28%), 0 0 0 2.5px hsl(35 10% 15%);
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.wc-radio-socket:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 3px hsl(0 0% 0% / 0.6), inset 0 -1px 1px hsl(35 20% 30% / 0.2), 0 0 0 1.5px hsl(45 70% 50%), 0 0 0 3px hsl(45 80% 50% / 0.35), 0 0 12px hsl(45 100% 60% / 0.3);
+}
+
+.wc-radio-socket[data-disabled], .wc-radio-socket:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.wc-radio-gem {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, hsl(48 100% 78%) 0%, hsl(43 100% 60%) 40%, hsl(38 90% 45%) 75%, hsl(30 80% 35%) 100%);
+  box-shadow: 0 0 4px hsl(45 100% 55% / 0.8), 0 0 10px hsl(45 100% 50% / 0.4), inset 0 -1px 2px hsl(30 80% 30% / 0.4), inset 0 1px 1px hsl(50 100% 85% / 0.5);
+  animation: wc-gem-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes wc-gem-pulse {
+  0%, 100% { box-shadow: 0 0 4px hsl(45 100% 55% / 0.8), 0 0 10px hsl(45 100% 50% / 0.4), inset 0 -1px 2px hsl(30 80% 30% / 0.4), inset 0 1px 1px hsl(50 100% 85% / 0.5); }
+  50% { box-shadow: 0 0 6px hsl(45 100% 55% / 1), 0 0 16px hsl(45 100% 50% / 0.55), inset 0 -1px 2px hsl(30 80% 30% / 0.4), inset 0 1px 1px hsl(50 100% 85% / 0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-radio-gem { animation: none; }
+}

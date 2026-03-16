@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 import { createProfile } from "@/app/actions/profiles";
 import { Button } from "@/components/ui/button";
-import { WcButton } from "@/components/ui/wc-button";
+import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -94,22 +93,22 @@ export function CreateProfileDialog({
           <DialogFooter>
             <Button
               type="button"
-              variant="outline"
+              variant="frame"
               onClick={() => handleOpenChange(false)}
               disabled={loading}
             >
               Annuler
             </Button>
-            <WcButton type="submit" disabled={loading || name.trim().length === 0}>
+            <Button type="submit" disabled={loading || name.trim().length === 0}>
               {loading ? (
                 <>
-                  <Loader2 className="mr-1.5 h-4 w-4 animate-spin" aria-hidden="true" />
+                  <Spinner className="mr-1.5 size-4" aria-hidden="true" />
                   Création…
                 </>
               ) : (
                 "Créer"
               )}
-            </WcButton>
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

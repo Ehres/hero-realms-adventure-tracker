@@ -7,6 +7,7 @@ import { createAdventure } from "@/app/actions/adventures";
 import type { Adventure, Profile } from "@/types";
 import type { HeroClass } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
   CardContent,
@@ -202,47 +203,29 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
           <div className="grid gap-3">
             {profiles.map((profile) => {
               const isSelected = selectedProfileIds.has(profile.id);
+              const adventureCount = getAdventuresForProfile(profile.id).length;
               return (
-                <button
+                <div
                   key={profile.id}
-                  type="button"
                   onClick={() => toggleProfile(profile.id)}
-                  className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${
+                  className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${
                     isSelected
                       ? "border-primary bg-primary/10 text-foreground"
                       : "border-border bg-card text-muted-foreground hover:border-border/80 hover:text-foreground"
                   }`}
                 >
-                  <div
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-colors ${
-                      isSelected
-                        ? "border-primary bg-primary"
-                        : "border-muted-foreground"
-                    }`}
-                  >
-                    {isSelected && (
-                      <svg
-                        className="h-3 w-3 text-primary-foreground"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                      >
-                        <path
-                          d="M2 6l3 3 5-5"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </div>
+                  <Checkbox
+                    id={`profile-${profile.id}`}
+                    checked={isSelected}
+                    onCheckedChange={() => toggleProfile(profile.id)}
+                  />
                   <span className="font-medium">{profile.name}</span>
-                  {getAdventuresForProfile(profile.id).length > 0 && (
+                  {adventureCount > 0 && (
                     <span className="ml-auto text-xs text-muted-foreground">
-                      {getAdventuresForProfile(profile.id).length} aventure(s)
+                      {adventureCount} aventure(s)
                     </span>
                   )}
-                </button>
+                </div>
               );
             })}
           </div>
@@ -396,7 +379,7 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
 
           <div className="flex justify-between pt-2">
             <Button
-              variant="outline"
+              variant="frame"
               onClick={() => {
                 setStep(1);
                 setError(null);

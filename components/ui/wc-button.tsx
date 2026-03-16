@@ -1,2 +1,2 @@
-// Re-export du bouton warcraftcn pour les CTA narratifs (level-up, accueil, confirm)
-export { Button as WcButton, buttonVariants as wcButtonVariants } from "@/components/ui/warcraftcn/button";
+// WcButton is now just Button — warcraftcn IS the default
+export { Button as WcButton } from "@/components/ui/button";

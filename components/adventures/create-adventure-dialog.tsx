@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { createAdventure } from "@/app/actions/adventures";
 import { MAX_HP } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { WcButton } from "@/components/ui/wc-button";
 import {
   Dialog,
   DialogContent,
@@ -94,7 +93,7 @@ export function CreateAdventureDialog({ profileId }: CreateAdventureDialogProps)
 
   return (
     <>
-      <Button variant="outline" onClick={() => setOpen(true)}>
+      <Button variant="frame" onClick={() => setOpen(true)}>
         Nouvelle aventure
       </Button>
 
@@ -151,19 +150,19 @@ export function CreateAdventureDialog({ profileId }: CreateAdventureDialogProps)
         <DialogFooter>
           <Button
             type="button"
-            variant="outline"
+            variant="frame"
             onClick={() => handleOpenChange(false)}
             disabled={isPending}
           >
             Annuler
           </Button>
-          <WcButton
+          <Button
             type="button"
             onClick={handleCreate}
             disabled={isPending || selected === null}
           >
             {isPending ? "Création…" : "Commencer l'aventure"}
-          </WcButton>
+          </Button>
         </DialogFooter>
       </DialogContent>
       </Dialog>

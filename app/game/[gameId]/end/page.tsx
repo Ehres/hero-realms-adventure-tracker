@@ -9,7 +9,7 @@ import { assignLoot } from "@/app/actions/loot";
 import { getGameWithParticipants } from "@/app/actions/game-queries";
 import { HeroClassBadge } from "@/components/adventures/hero-class-badge";
 import { Button } from "@/components/ui/button";
-import { WcButton } from "@/components/ui/wc-button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Card,
   CardContent,
@@ -145,27 +145,28 @@ function EndGameContent({ gameId }: { gameId: string }) {
         </p>
       </div>
 
-      <div className="space-y-3">
+      <RadioGroup
+        value={selectedWinner ?? ""}
+        onValueChange={setSelectedWinner}
+        orientation="vertical"
+        className="space-y-3"
+      >
         {participants.map((p) => {
           const isWinner = selectedWinner === p.adventureId;
           return (
-            <button
+            <label
               key={p.adventureId}
-              type="button"
-              onClick={() => setSelectedWinner(p.adventureId)}
-              disabled={isPending}
-              className={`flex w-full items-center gap-3 rounded-xl border p-4 text-left transition-colors ${
+              htmlFor={`winner-${p.adventureId}`}
+              className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border p-4 text-left transition-colors ${
                 isWinner
                   ? "border-primary bg-primary/10"
                   : "border-border bg-card hover:border-border/80"
-              } disabled:opacity-60`}
+              } ${isPending ? "pointer-events-none opacity-60" : ""}`}
             >
-              <div
-                className={`h-5 w-5 shrink-0 rounded-full border-2 transition-colors ${
-                  isWinner
-                    ? "border-primary bg-primary"
-                    : "border-muted-foreground"
-                }`}
+              <RadioGroupItem
+                id={`winner-${p.adventureId}`}
+                value={p.adventureId}
+                disabled={isPending}
               />
               <div className="flex flex-1 items-center gap-2">
                 <HeroClassBadge
@@ -178,10 +179,10 @@ function EndGameContent({ gameId }: { gameId: string }) {
               >
                 {isWinner ? "+30 XP" : "+10 XP"}
               </span>
-            </button>
+            </label>
           );
         })}
-      </div>
+      </RadioGroup>
 
       {error && (
         <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
@@ -191,20 +192,20 @@ function EndGameContent({ gameId }: { gameId: string }) {
 
       <div className="mt-6 flex gap-3">
         <Button
-          variant="outline"
+          variant="frame"
           onClick={() => router.push(`/game/${gameId}/combat`)}
           disabled={isPending}
           className="flex-1"
         >
           Retour
         </Button>
-        <WcButton
+        <Button
           onClick={handleConfirm}
           disabled={!selectedWinner || isPending}
           className="flex-1"
         >
           {isPending ? "Traitement..." : "Confirmer"}
-        </WcButton>
+        </Button>
       </div>
 
       {/* Loot assignment modal */}
@@ -246,7 +247,7 @@ function EndGameContent({ gameId }: { gameId: string }) {
 
               <div className="flex gap-2">
                 <Button
-                  variant="outline"
+                  variant="frame"
                   onClick={handleLootSkip}
                   className="flex-1"
                 >

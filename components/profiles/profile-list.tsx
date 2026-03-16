@@ -17,7 +17,7 @@ export function ProfileList({ profiles }: ProfileListProps) {
     <section>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Joueurs</h2>
-        <Button variant="outline" onClick={() => setDialogOpen(true)}>
+        <Button variant="frame" onClick={() => setDialogOpen(true)}>
           Nouveau profil
         </Button>
       </div>
@@ -29,7 +29,7 @@ export function ProfileList({ profiles }: ProfileListProps) {
             Créez un profil pour commencer à suivre vos aventures.
           </p>
           <Button
-            variant="outline"
+            variant="frame"
             className="mt-6"
             onClick={() => setDialogOpen(true)}
           >
