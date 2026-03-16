@@ -6,22 +6,16 @@ import { createGame } from "@/app/actions/games";
 import { createAdventure } from "@/app/actions/adventures";
 import type { Adventure, Profile } from "@/types";
 import type { HeroClass } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/warcraftcn/button";
+import { Checkbox } from "@/components/ui/warcraftcn/checkbox";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/warcraftcn/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/warcraftcn/radio-group";
 import { HeroClassBadge } from "@/components/adventures/hero-class-badge";
 
 const HERO_CLASSES: HeroClass[] = [
@@ -205,27 +199,30 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
               const isSelected = selectedProfileIds.has(profile.id);
               const adventureCount = getAdventuresForProfile(profile.id).length;
               return (
-                <div
+                <Card
                   key={profile.id}
                   onClick={() => toggleProfile(profile.id)}
-                  className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${
+                  className={`cursor-pointer transition-colors ${
                     isSelected
-                      ? "border-primary bg-primary/10 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:border-border/80 hover:text-foreground"
+                      ? "border-primary bg-primary/10"
+                      : "hover:border-border/80"
                   }`}
                 >
-                  <Checkbox
-                    id={`profile-${profile.id}`}
-                    checked={isSelected}
-                    onCheckedChange={() => toggleProfile(profile.id)}
-                  />
-                  <span className="font-medium">{profile.name}</span>
-                  {adventureCount > 0 && (
-                    <span className="ml-auto text-xs text-muted-foreground">
-                      {adventureCount} aventure(s)
-                    </span>
-                  )}
-                </div>
+                  <CardContent className="flex items-center gap-3 py-2">
+                    <Checkbox
+                      id={`profile-${profile.id}`}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleProfile(profile.id)}
+                    >
+                      {profile.name}
+                    </Checkbox>
+                    {adventureCount > 0 && (
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {adventureCount} aventure(s)
+                      </span>
+                    )}
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
@@ -262,110 +259,77 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {profileAdventures.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Aventures existantes</p>
-                      <div className="grid gap-2">
-                        {profileAdventures.map((adv) => {
-                          const isChosen =
-                            selection?.type === "existing" &&
-                            selection.adventureId === adv.id;
-                          return (
-                            <button
-                              key={adv.id}
-                              type="button"
-                              onClick={() =>
-                                setAdventureSelection(profile.id, {
-                                  type: "existing",
-                                  adventureId: adv.id,
-                                })
-                              }
-                              className={`flex items-center gap-3 rounded-lg border p-3 text-left transition-colors ${
-                                isChosen
-                                  ? "border-primary bg-primary/10"
-                                  : "border-border bg-card hover:border-border/80"
-                              }`}
-                            >
-                              <div
-                                className={`h-4 w-4 shrink-0 rounded-full border transition-colors ${
-                                  isChosen
-                                    ? "border-primary bg-primary"
-                                    : "border-muted-foreground"
-                                }`}
-                              />
-                              <div className="flex flex-1 items-center gap-2">
-                                <HeroClassBadge
-                                  heroClass={adv.heroClass as HeroClass}
-                                  size="sm"
-                                />
-                                <span className="text-sm">
-                                  Niv. {adv.level} — {adv.battleCount} combats
-                                </span>
-                              </div>
-                              {adv.pendingLevelUp && (
-                                <span className="text-xs font-medium text-yellow-400">
-                                  Niveau en attente
-                                </span>
-                              )}
-                            </button>
-                          );
-                        })}
+                  <RadioGroup
+                    value={selection?.type === "existing" ? selection.adventureId : "new"}
+                    onValueChange={(val) => {
+                      if (val === "new") {
+                        setAdventureSelection(profile.id, { type: "new", heroClass: null });
+                      } else {
+                        setAdventureSelection(profile.id, { type: "existing", adventureId: val });
+                      }
+                    }}
+                  >
+                    {profileAdventures.map((adv) => (
+                      <div key={adv.id} className="flex items-center gap-3">
+                        <RadioGroupItem value={adv.id} id={`adv-${adv.id}`} />
+                        <label
+                          htmlFor={`adv-${adv.id}`}
+                          className="fantasy flex items-center gap-2 cursor-pointer"
+                        >
+                          <HeroClassBadge
+                            heroClass={adv.heroClass as HeroClass}
+                            size="sm"
+                          />
+                          <span className="text-sm">
+                            Niv. {adv.level} — {adv.battleCount} combats
+                          </span>
+                          {adv.pendingLevelUp && (
+                            <span className="text-xs font-medium text-yellow-400">
+                              Niveau en attente
+                            </span>
+                          )}
+                        </label>
                       </div>
+                    ))}
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="new" id={`new-${profile.id}`} />
+                      <label
+                        htmlFor={`new-${profile.id}`}
+                        className="fantasy cursor-pointer text-muted-foreground"
+                      >
+                        + Nouvelle aventure
+                      </label>
                     </div>
-                  )}
+                  </RadioGroup>
 
-                  <div className="space-y-2">
-                    <button
-                      type="button"
-                      onClick={() =>
+                  {selection?.type === "new" && (
+                    <RadioGroup
+                      orientation="horizontal"
+                      value={selection.heroClass ?? ""}
+                      onValueChange={(val) =>
                         setAdventureSelection(profile.id, {
                           type: "new",
-                          heroClass: null,
+                          heroClass: val as HeroClass,
                         })
                       }
-                      className={`flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-colors ${
-                        selection?.type === "new"
-                          ? "border-primary bg-primary/10"
-                          : "border-dashed border-border bg-card hover:border-border/80"
-                      }`}
+                      className="pl-7 flex-wrap"
                     >
-                      <div
-                        className={`h-4 w-4 shrink-0 rounded-full border transition-colors ${
-                          selection?.type === "new"
-                            ? "border-primary bg-primary"
-                            : "border-muted-foreground"
-                        }`}
-                      />
-                      <span className="text-sm text-muted-foreground">
-                        + Nouvelle aventure
-                      </span>
-                    </button>
-
-                    {selection?.type === "new" && (
-                      <div className="pl-7">
-                        <Select
-                          value={selection.heroClass ?? ""}
-                          onValueChange={(value) =>
-                            setAdventureSelection(profile.id, {
-                              type: "new",
-                              heroClass: value as HeroClass,
-                            })
-                          }
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Choisir une classe" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {HERO_CLASSES.map((cls) => (
-                              <SelectItem key={cls} value={cls}>
-                                {CLASS_LABELS[cls]}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
-                  </div>
+                      {HERO_CLASSES.map((cls) => (
+                        <div key={cls} className="flex flex-col items-center gap-1">
+                          <RadioGroupItem
+                            value={cls}
+                            id={`cls-${profile.id}-${cls}`}
+                          />
+                          <label
+                            htmlFor={`cls-${profile.id}-${cls}`}
+                            className="fantasy text-xs cursor-pointer"
+                          >
+                            {CLASS_LABELS[cls]}
+                          </label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  )}
                 </CardContent>
               </Card>
             );

@@ -61,16 +61,16 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="border-b border-border px-4 py-4">
+    <div className="h-dvh flex flex-col overflow-hidden bg-background text-foreground">
+      <header className="shrink-0 border-b border-border px-4 py-3">
         <h1 className="text-lg font-bold tracking-tight">Combat en cours</h1>
         <p className="text-xs text-muted-foreground">
           {participants.length} joueur{participants.length > 1 ? "s" : ""}
         </p>
       </header>
 
-      <main className="flex-1 px-4 py-6">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <main className="flex-1 overflow-hidden p-3">
+        <div className="h-full grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {participants.map((participant) => {
             const hpPercent =
               participant.maxHp > 0
@@ -86,8 +86,8 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
             else if (isCritical) hpColorClass = "text-red-500 animate-pulse";
 
             return (
-              <Card key={participant.adventureId} className="relative">
-                <CardContent className="flex flex-col gap-4 pt-4">
+              <Card key={participant.adventureId} className="h-full flex flex-col">
+                <CardContent className="flex-1 flex flex-col gap-3 pt-4">
                   <div className="flex items-center gap-2">
                     <HeroClassBadge heroClass={participant.heroClass} />
                     <span className="text-sm font-medium">
@@ -95,9 +95,9 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                     </span>
                   </div>
 
-                  <div className="flex flex-col items-center gap-1 py-2">
+                  <div className="flex-1 flex flex-col items-center justify-center gap-2">
                     <span
-                      className={`font-mono text-6xl font-bold tabular-nums transition-colors ${hpColorClass}`}
+                      className={`font-mono text-7xl font-bold tabular-nums transition-colors ${hpColorClass}`}
                     >
                       {participant.currentHp}
                     </span>
@@ -106,7 +106,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                     </span>
 
                     {/* HP bar */}
-                    <div className="mt-2 h-2 w-full max-w-40 overflow-hidden rounded-full bg-muted">
+                    <div className="mt-2 h-2 w-full max-w-xs overflow-hidden rounded-full bg-muted">
                       <div
                         className={`h-full rounded-full transition-all ${
                           isDead
@@ -124,7 +124,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-1.5">
+                  <div className="grid grid-cols-2 gap-2">
                     {HP_DELTAS.map((delta) => (
                       <Button
                         key={delta}
@@ -136,7 +136,7 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
                             delta
                           )
                         }
-                        className={`w-full min-h-[44px] font-mono text-sm${delta < 0 ? " brightness-75 hue-rotate-[-20deg]" : ""}`}
+                        className={`min-h-[72px] w-full text-2xl font-bold font-mono${delta < 0 ? " brightness-75 hue-rotate-[-20deg]" : ""}`}
                       >
                         {delta > 0 ? `+${delta}` : delta}
                       </Button>
@@ -149,10 +149,10 @@ export function HpTracker({ gameId, initialParticipants }: HpTrackerProps) {
         </div>
       </main>
 
-      <footer className="border-t border-border px-4 py-4">
+      <footer className="shrink-0 border-t border-border px-4 py-3">
         <Link
           href={`/game/${gameId}/end`}
-          className="flex h-9 w-full items-center justify-center rounded-lg border border-border bg-background px-2.5 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+          className="flex h-14 w-full items-center justify-center rounded-lg border border-border bg-background px-2.5 text-base font-medium transition-colors hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
         >
           Fin de partie
         </Link>
