@@ -7,7 +7,6 @@ import { createAdventure } from "@/app/actions/adventures";
 import type { Adventure, Profile } from "@/types";
 import type { HeroClass } from "@/types";
 import { Button } from "@/components/ui/warcraftcn/button";
-import { Checkbox } from "@/components/ui/warcraftcn/checkbox";
 import {
   Card,
   CardContent,
@@ -15,8 +14,12 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/warcraftcn/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/warcraftcn/radio-group";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/warcraftcn/radio-group";
 import { HeroClassBadge } from "@/components/adventures/hero-class-badge";
+import { HeroProfileCard } from "@/components/shared/hero-profile-card";
 
 const HERO_CLASSES: HeroClass[] = [
   "archer",
@@ -43,13 +46,16 @@ type AdventureSelection =
   | { type: "existing"; adventureId: string }
   | { type: "new"; heroClass: HeroClass | null };
 
-export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) {
+export function GameSetupWizard({
+  profiles,
+  adventures,
+}: GameSetupWizardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedProfileIds, setSelectedProfileIds] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [adventureSelections, setAdventureSelections] = useState<
     Record<string, AdventureSelection>
@@ -74,7 +80,7 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
 
   function setAdventureSelection(
     profileId: string,
-    selection: AdventureSelection
+    selection: AdventureSelection,
   ) {
     setAdventureSelections((prev) => ({ ...prev, [profileId]: selection }));
   }
@@ -108,11 +114,12 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
   function validateStep2(): string | null {
     for (const profileId of selectedProfileIds) {
       const selection = adventureSelections[profileId];
-      if (!selection) return "Veuillez sélectionner une aventure pour chaque joueur.";
+      if (!selection)
+        return "Veuillez sélectionner une aventure pour chaque joueur.";
 
       if (selection.type === "existing") {
         const adventure = adventures.find(
-          (a) => a.id === selection.adventureId
+          (a) => a.id === selection.adventureId,
         );
         if (!adventure) return "Aventure introuvable.";
         if (adventure.pendingLevelUp) {
@@ -159,25 +166,21 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
         router.push(`/game/${gameId}/combat`);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Une erreur est survenue."
+          err instanceof Error ? err.message : "Une erreur est survenue.",
         );
       }
     });
   }
 
-  const selectedProfiles = profiles.filter((p) =>
-    selectedProfileIds.has(p.id)
-  );
+  const selectedProfiles = profiles.filter((p) => selectedProfileIds.has(p.id));
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="px-4 py-10">
       <div className="mb-8">
         <h1 className="text-2xl font-bold tracking-tight">Nouvelle Partie</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Étape {step} sur 2 —{" "}
-          {step === 1
-            ? "Sélectionnez les joueurs"
-            : "Configurez les aventures"}
+          {step === 1 ? "Sélectionnez les joueurs" : "Configurez les aventures"}
         </p>
         <div className="mt-3 flex gap-2">
           <div
@@ -194,35 +197,23 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
           <p className="text-sm text-muted-foreground">
             Sélectionnez au moins 2 joueurs.
           </p>
-          <div className="grid gap-3">
+          <div className="flex flex-wrap gap-3">
             {profiles.map((profile) => {
               const isSelected = selectedProfileIds.has(profile.id);
               const adventureCount = getAdventuresForProfile(profile.id).length;
               return (
-                <Card
+                <HeroProfileCard
                   key={profile.id}
-                  onClick={() => toggleProfile(profile.id)}
-                  className={`cursor-pointer transition-colors ${
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "hover:border-border/80"
-                  }`}
-                >
-                  <CardContent className="flex items-center gap-3 py-2">
-                    <Checkbox
-                      id={`profile-${profile.id}`}
-                      checked={isSelected}
-                      onCheckedChange={() => toggleProfile(profile.id)}
-                    >
-                      {profile.name}
-                    </Checkbox>
-                    {adventureCount > 0 && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        {adventureCount} aventure(s)
-                      </span>
-                    )}
-                  </CardContent>
-                </Card>
+                  name={profile.name}
+                  subtitle={
+                    adventureCount > 0
+                      ? `${adventureCount} aventure${adventureCount > 1 ? "s" : ""}`
+                      : undefined
+                  }
+                  selectable
+                  selected={isSelected}
+                  onSelect={() => toggleProfile(profile.id)}
+                />
               );
             })}
           </div>
@@ -234,10 +225,7 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
           )}
 
           <div className="flex justify-end pt-2">
-            <Button
-              onClick={goToStep2}
-              disabled={selectedProfileIds.size < 2}
-            >
+            <Button onClick={goToStep2} disabled={selectedProfileIds.size < 2}>
               Suivant
             </Button>
           </div>
@@ -260,12 +248,22 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <RadioGroup
-                    value={selection?.type === "existing" ? selection.adventureId : "new"}
+                    value={
+                      selection?.type === "existing"
+                        ? selection.adventureId
+                        : "new"
+                    }
                     onValueChange={(val) => {
                       if (val === "new") {
-                        setAdventureSelection(profile.id, { type: "new", heroClass: null });
+                        setAdventureSelection(profile.id, {
+                          type: "new",
+                          heroClass: null,
+                        });
                       } else {
-                        setAdventureSelection(profile.id, { type: "existing", adventureId: val });
+                        setAdventureSelection(profile.id, {
+                          type: "existing",
+                          adventureId: val,
+                        });
                       }
                     }}
                   >
@@ -315,7 +313,10 @@ export function GameSetupWizard({ profiles, adventures }: GameSetupWizardProps) 
                       className="pl-7 flex-wrap"
                     >
                       {HERO_CLASSES.map((cls) => (
-                        <div key={cls} className="flex flex-col items-center gap-1">
+                        <div
+                          key={cls}
+                          className="flex flex-col items-center gap-1"
+                        >
                           <RadioGroupItem
                             value={cls}
                             id={`cls-${profile.id}-${cls}`}
